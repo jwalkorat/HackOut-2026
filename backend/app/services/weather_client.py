@@ -29,11 +29,13 @@ def fetch_live_weather_forecast(latitude: float, longitude: float, forecast_days
                 "temperature": hourly["temperature_2m"],
                 "wind_speed": hourly["wind_speed_10m"]
             })
-            return df_weather
+            return df_weather, "live"
         except Exception as e:
             print(f"Open-Meteo Live API attempt {attempt+1} failed: {e}. Retrying...")
             time.sleep(1)
 
+    # B3 Fix: Return source flag so caller can surface this to the API response
+    # instead of silently returning synthetic data that looks like a normal 200.
     print("Live Open-Meteo API unavailable. Generating realistic live forecast baseline...")
     now = pd.Timestamp.now().floor("h")
     dates = pd.date_range(start=now, periods=forecast_days * 24, freq="h")
@@ -54,4 +56,4 @@ def fetch_live_weather_forecast(latitude: float, longitude: float, forecast_days
         "cloud_cover": cloud_cover,
         "temperature": temperature,
         "wind_speed": wind_speed
-    })
+    }), "synthetic_fallback"

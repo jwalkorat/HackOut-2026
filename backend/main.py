@@ -2,7 +2,7 @@ import os
 import joblib
 import numpy as np
 import pandas as pd
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,29 +51,29 @@ def load_models():
     else:
         print(f"Warning: Wind model not found at {wind_path}")
 
-# Pydantic Request Schemas
+# Pydantic Request Schemas with Field Constraints
 class LocationSchema(BaseModel):
-    latitude: float = 23.0225
-    longitude: float = 72.5714
+    latitude: float = Field(default=23.0225, ge=-90.0, le=90.0)
+    longitude: float = Field(default=72.5714, ge=-180.0, le=180.0)
 
 class DemandSchema(BaseModel):
-    known_avg_kw: Optional[float] = None
-    category: Optional[str] = "commercial"
+    known_avg_kw: Optional[float] = Field(default=None, gt=0.0)
+    category: Optional[str] = None
 
 class StorageSchema(BaseModel):
-    has_battery: Optional[bool] = False
-    battery_capacity_kwh: Optional[float] = 0.0
-    battery_current_pct: Optional[float] = 50.0
-    has_backup_generator: Optional[bool] = False
+    has_battery: bool = False
+    battery_capacity_kwh: float = Field(default=0.0, ge=0.0)
+    battery_current_pct: float = Field(default=50.0, ge=0.0, le=100.0)
+    has_backup_generator: bool = False
 
 class ForecastRequest(BaseModel):
     location: LocationSchema = Field(default_factory=LocationSchema)
-    energy_type: str = "solar"  # "solar", "wind", "both"
-    installed_capacity_kw: float = 75.0
+    energy_type: str = Field(default="solar", description="'solar', 'wind', or 'both'")
+    installed_capacity_kw: float = Field(default=75.0, gt=0.0)
     equipment_model: Optional[str] = "Generic"
-    demand: Optional[DemandSchema] = Field(default_factory=DemandSchema)
-    storage: Optional[StorageSchema] = Field(default_factory=StorageSchema)
-    forecast_hours: Optional[int] = 72
+    demand: Optional[DemandSchema] = None
+    storage: StorageSchema = Field(default_factory=StorageSchema)
+    forecast_hours: int = Field(default=72, ge=1, le=72)
 
 @app.get("/")
 def read_root():
@@ -91,15 +91,25 @@ def get_presets():
 @app.post("/forecast")
 @app.post("/api/forecast")
 def generate_forecast(req: ForecastRequest):
-    energy_type = req.energy_type.lower()
+    energy_type = req.energy_type.lower().strip()
+    if energy_type not in ["solar", "wind", "both"]:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Invalid energy_type '{req.energy_type}'. Must be 'solar', 'wind', or 'both'."
+        )
+
     forecast_days = max(1, min(7, (req.forecast_hours + 23) // 24))
 
     # 1. Fetch Live Weather Forecast
-    df_weather = fetch_live_weather_forecast(
-        latitude=req.location.latitude,
-        longitude=req.location.longitude,
-        forecast_days=forecast_days
-    )
+    try:
+        df_weather, weather_source = fetch_live_weather_forecast(
+            latitude=req.location.latitude,
+            longitude=req.location.longitude,
+            forecast_days=forecast_days
+        )
+    except Exception as e:
+        raise HTTPException(status_code=503, detail="Weather service temporarily unavailable, please try again")
+
     df_weather = df_weather.iloc[:req.forecast_hours].copy()
 
     # 2. Predict % Capacity Output
@@ -121,17 +131,35 @@ def generate_forecast(req: ForecastRequest):
     else:
         predicted_pct = 0.5 * (pct_solar + pct_wind)
 
-    # 3. Convert % to kW
-    predicted_kw = np.round(predicted_pct * req.installed_capacity_kw, 2)
-    predicted_pct_display = np.round(predicted_pct * 100.0, 1)
+    # Output Clamping [0.0, 100.0]
+    predicted_pct_display = np.clip(np.round(predicted_pct * 100.0, 1), 0.0, 100.0)
+    raw_predicted_kw = np.round((predicted_pct_display / 100.0) * req.installed_capacity_kw, 2)
 
-    # 4. Independent Demand Estimation
+    # B1 Fix: Apply equipment efficiency multiplier relative to Generic baseline (20.0%)
+    # This makes equipment_model selection meaningfully change predicted_kw output.
+    GENERIC_SOLAR_EFFICIENCY_PCT = 20.0
+    efficiency_multiplier = 1.0
+    if energy_type in ["solar", "both"] and req.equipment_model:
+        eq_spec = get_equipment_spec(req.equipment_model, energy_type="solar")
+        eq_efficiency = eq_spec.get("efficiency_pct", GENERIC_SOLAR_EFFICIENCY_PCT)
+        efficiency_multiplier = eq_efficiency / GENERIC_SOLAR_EFFICIENCY_PCT
+    predicted_kw = np.round(raw_predicted_kw * efficiency_multiplier, 2)
+
+    # 3. Independent Demand Estimation
     demand_dict = req.demand.dict() if req.demand else {}
-    hourly_demand_kw = estimate_hourly_demand(df_weather["timestamp"], demand_dict)
+    hourly_demand_kw = estimate_hourly_demand(
+        timestamps=df_weather["timestamp"],
+        demand_input=demand_dict,
+        installed_capacity_kw=req.installed_capacity_kw
+    )
 
-    # 5. Flagging & Recommendations
-    storage = req.storage or StorageSchema()
+    # 4. Flagging & Recommendations
+    storage = req.storage
     forecast_items = []
+
+    # Fix: Ensure 0.0 is preserved and not overridden by falsy fallback
+    batt_cap = float(storage.battery_capacity_kwh if storage.battery_capacity_kwh is not None else 0.0)
+    batt_pct = float(storage.battery_current_pct if storage.battery_current_pct is not None else 50.0)
 
     for i in range(len(df_weather)):
         gen_kw = float(predicted_kw[i])
@@ -141,12 +169,13 @@ def generate_forecast(req: ForecastRequest):
         action = recommend_grid_action(
             flag=flag,
             has_battery=bool(storage.has_battery),
-            battery_current_pct=float(storage.battery_current_pct or 50.0),
+            battery_capacity_kwh=batt_cap,
+            battery_current_pct=batt_pct,
             has_backup_generator=bool(storage.has_backup_generator)
         )
 
         forecast_items.append({
-            "timestamp": df_weather["timestamp"].iloc[i].isoformat(),
+            "timestamp": df_weather["timestamp"].iloc[i].isoformat() + "Z" if not df_weather["timestamp"].iloc[i].isoformat().endswith("Z") else df_weather["timestamp"].iloc[i].isoformat(),
             "predicted_pct_capacity": float(predicted_pct_display[i]),
             "predicted_kw": gen_kw,
             "demand_kw": dem_kw,
@@ -162,9 +191,11 @@ def generate_forecast(req: ForecastRequest):
 
     return {
         "generated_at": datetime.utcnow().isoformat() + "Z",
+        "weather_data_source": weather_source,
         "energy_type": energy_type,
         "installed_capacity_kw": req.installed_capacity_kw,
-        "equipment_model": req.equipment_model,
+        "equipment_model": req.equipment_model or "Generic",
+        "equipment_efficiency_multiplier": round(efficiency_multiplier, 4),
         "total_forecasted_kwh": float(round(np.sum(predicted_kw), 1)),
         "peak_generation_kw": float(round(np.max(predicted_kw), 1)),
         "forecast": forecast_items
