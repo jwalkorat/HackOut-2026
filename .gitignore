@@ -41,3 +41,8 @@ dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Scratch & Local Assets
+Skills/
+extracted_skills/
+ignore/

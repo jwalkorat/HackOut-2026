@@ -118,3 +118,18 @@ pip install fastapi uvicorn xgboost pandas scikit-learn requests matplotlib jobl
 # Run backend server
 uvicorn backend.main:app --reload --port 8000
 ```
+
+---
+
+## 🖥️ Running the Frontend Dashboard Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Start Vite development server
+npm run dev
+
+# Build production bundle
+npm run build
+```
