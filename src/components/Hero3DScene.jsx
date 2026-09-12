@@ -610,8 +610,8 @@ export default function Hero3DScene({ energyMode = 'hybrid', onModeChange }) {
 
   return (
     <div className="relative w-full h-[460px] sm:h-[520px] rounded-3xl overflow-hidden border border-sky-200/80 bg-gradient-to-b from-[#f0f9ff] via-[#e6f4fe] to-[#dbeafe] shadow-[0_10px_35px_-8px_rgba(2,132,199,0.15)]">
-      {/* 3D WebGL Canvas Container */}
-      <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      {/* 3D WebGL Canvas Container with touch-action pan-y so page scroll is never blocked */}
+      <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none [touch-action:pan-y]" />
 
       {/* Subtle Dot Grid Overlay for Technical Blueprint aesthetic */}
       <div className="absolute inset-0 bg-[radial-gradient(#0284c7_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.08] pointer-events-none" />

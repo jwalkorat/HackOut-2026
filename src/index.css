@@ -1,10 +1,21 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    height: auto;
+  }
+
   body {
     background-color: #f0f7ff;
     color: #0f172a;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
   }
 
   /* Ergonomic light blue scrollbars */
