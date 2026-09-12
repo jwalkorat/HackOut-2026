@@ -1,0 +1,126 @@
+{
+  "solar_panels": [
+    {
+      "id": "generic-solar",
+      "brand": "Generic",
+      "model": "Standard Industry Default (Don't Know)",
+      "rated_power_w": 400,
+      "efficiency_pct": 20.0,
+      "temp_coeff_pct_per_c": -0.35,
+      "default_tilt_deg": 23,
+      "default_azimuth_deg": 180
+    },
+    {
+      "id": "longi-himo6",
+      "brand": "LONGi Solar",
+      "model": "Hi-MO 6 Explorer LR5-72HTH-585M",
+      "rated_power_w": 585,
+      "efficiency_pct": 22.8,
+      "temp_coeff_pct_per_c": -0.29,
+      "default_tilt_deg": 28,
+      "default_azimuth_deg": 180
+    },
+    {
+      "id": "firstsolar-series7",
+      "brand": "First Solar",
+      "model": "Series 7 TR1 FS-7470",
+      "rated_power_w": 540,
+      "efficiency_pct": 19.7,
+      "temp_coeff_pct_per_c": -0.32,
+      "default_tilt_deg": 30,
+      "default_azimuth_deg": 180
+    },
+    {
+      "id": "canadian-bihiku7",
+      "brand": "Canadian Solar",
+      "model": "BiHiKu7 CS7N-665MB-AG",
+      "rated_power_w": 665,
+      "efficiency_pct": 21.4,
+      "temp_coeff_pct_per_c": -0.34,
+      "default_tilt_deg": 26,
+      "default_azimuth_deg": 180
+    },
+    {
+      "id": "waaree_540",
+      "brand": "Waaree",
+      "model": "Adani / Waaree 540W Mono PERC",
+      "rated_power_w": 540,
+      "efficiency_pct": 21.1,
+      "temp_coeff_pct_per_c": -0.35,
+      "default_tilt_deg": 23,
+      "default_azimuth_deg": 180
+    },
+    {
+      "id": "sunpower_maxeon3",
+      "brand": "SunPower",
+      "model": "Maxeon 3 400W",
+      "rated_power_w": 400,
+      "efficiency_pct": 22.6,
+      "temp_coeff_pct_per_c": -0.29,
+      "default_tilt_deg": 20,
+      "default_azimuth_deg": 180
+    }
+  ],
+  "wind_turbines": [
+    {
+      "id": "generic-wind",
+      "brand": "Generic",
+      "model": "Standard Industry Default (Don't Know)",
+      "rated_power_kw": 3000,
+      "cut_in_speed_ms": 3.0,
+      "rated_speed_ms": 11.5,
+      "cut_out_speed_ms": 25.0,
+      "default_hub_height_m": 100
+    },
+    {
+      "id": "vestas-v162",
+      "brand": "Vestas",
+      "model": "V162-6.2 MW EnVentus",
+      "rated_power_kw": 6200,
+      "cut_in_speed_ms": 3.0,
+      "rated_speed_ms": 11.2,
+      "cut_out_speed_ms": 25.0,
+      "default_hub_height_m": 148
+    },
+    {
+      "id": "ge-cypress",
+      "brand": "GE Vernova",
+      "model": "Cypress 5.5-158",
+      "rated_power_kw": 5500,
+      "cut_in_speed_ms": 3.0,
+      "rated_speed_ms": 11.0,
+      "cut_out_speed_ms": 24.5,
+      "default_hub_height_m": 120
+    },
+    {
+      "id": "siemens-sg66",
+      "brand": "Siemens Gamesa",
+      "model": "SG 6.6-170 OptimaFlex",
+      "rated_power_kw": 6600,
+      "cut_in_speed_ms": 2.5,
+      "rated_speed_ms": 10.8,
+      "cut_out_speed_ms": 26.0,
+      "default_hub_height_m": 135
+    },
+    {
+      "id": "suzlon_s120",
+      "brand": "Suzlon",
+      "model": "S120 2.1MW",
+      "rated_power_kw": 2100,
+      "cut_in_speed_ms": 3.0,
+      "rated_speed_ms": 11.5,
+      "cut_out_speed_ms": 20.0,
+      "default_hub_height_m": 120
+    },
+    {
+      "id": "vestas_v117",
+      "brand": "Vestas",
+      "model": "V117 3.45MW",
+      "rated_power_kw": 3450,
+      "cut_in_speed_ms": 3.0,
+      "rated_speed_ms": 13.0,
+      "cut_out_speed_ms": 25.0,
+      "default_hub_height_m": 117
+    }
+  ]
+}
