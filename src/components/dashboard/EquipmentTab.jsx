@@ -24,7 +24,7 @@ export default function EquipmentTab() {
   return (
     <div className="space-y-6">
       {/* Category Tabs: Solar vs Wind */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-3xl surface-card">
         <div>
           <h3 className="font-display font-black text-lg text-slate-900">
             Curated Equipment Specification Registry
@@ -67,7 +67,7 @@ export default function EquipmentTab() {
       {/* Master-Detail Lookup Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Search & Model Selector List */}
-        <div className="lg:col-span-6 p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="lg:col-span-6 p-6 rounded-3xl surface-card">
           {/* Search Bar */}
           <div className="relative mb-4">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -136,7 +136,7 @@ export default function EquipmentTab() {
         </div>
 
         {/* Right Column: Parameters & Override Panel */}
-        <div className="lg:col-span-6 p-6 sm:p-8 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="lg:col-span-6 p-6 sm:p-8 rounded-3xl surface-card">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-sky-100">
             <div>
               <span className="text-[10px] font-mono text-sky-700 uppercase tracking-wider block font-bold">

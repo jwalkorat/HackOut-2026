@@ -5,7 +5,7 @@ export default function EnvironmentalPanel({ siteProfile }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] overflow-hidden transition-all">
+    <div className="rounded-3xl surface-card overflow-hidden transition-colors duration-200">
       {/* Panel Header with Collapsible Toggle */}
       <div
         onClick={() => setIsCollapsed(!isCollapsed)}

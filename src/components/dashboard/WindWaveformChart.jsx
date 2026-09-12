@@ -28,7 +28,7 @@ export default function WindWaveformChart({ siteProfile }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
       {/* 1. Dual-Metric Waveform Chart (Wind Speed vs Power Output) */}
-      <div className="md:col-span-8 p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] flex flex-col justify-between">
+      <div className="md:col-span-8 p-6 rounded-3xl surface-card flex flex-col justify-between">
         <div className="flex items-center justify-between pb-4 border-b border-sky-100 mb-4">
           <div>
             <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export default function WindWaveformChart({ siteProfile }) {
       </div>
 
       {/* 2. Semicircular Target Gauge & Nacelle Direction */}
-      <div className="md:col-span-4 p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] flex flex-col justify-between">
+      <div className="md:col-span-4 p-6 rounded-3xl surface-card flex flex-col justify-between">
         <div className="flex items-center justify-between pb-3 border-b border-sky-100">
           <span className="text-xs font-display font-black text-slate-900 uppercase tracking-wider">
             Target Completion & Yaw

@@ -49,7 +49,7 @@ export default function ConfigTab({ onApplyConfig }) {
   return (
     <div className="space-y-6">
       {/* Top Banner & Layer Switcher */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 border border-sky-300 text-sky-800 text-xs font-mono font-bold mb-2">
@@ -94,7 +94,7 @@ export default function ConfigTab({ onApplyConfig }) {
       {/* Main Form & Confidence Gauge Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Form Controls */}
-        <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl surface-card">
           <div className="flex items-center justify-between pb-4 mb-6 border-b border-sky-100">
             <div className="flex items-center gap-2">
               <span className={`w-2.5 h-2.5 rounded-full ${activeLayer === 1 ? 'bg-sky-500' : 'bg-amber-500'} animate-pulse`} />
@@ -278,7 +278,7 @@ export default function ConfigTab({ onApplyConfig }) {
         {/* Right Column: Live Confidence Meter & Fallback Registry */}
         <div className="lg:col-span-5 space-y-6">
           {/* Confidence Meter Card */}
-          <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+          <div className="p-6 rounded-3xl surface-card">
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-100">
               <span className="text-xs font-display font-black text-slate-900 uppercase tracking-wider">
                 Forecast Confidence Score

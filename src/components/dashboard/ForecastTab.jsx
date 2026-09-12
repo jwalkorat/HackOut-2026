@@ -32,7 +32,7 @@ export default function ForecastTab({ forecastData = [], currentSite }) {
 
       {/* 2. 72-Hour Energy Balance & Mix Breakdown Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>72h Projected Generation</span>
             <Zap className="w-4 h-4 text-sky-600" />
@@ -47,7 +47,7 @@ export default function ForecastTab({ forecastData = [], currentSite }) {
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>72h Scheduled Demand</span>
             <Calendar className="w-4 h-4 text-indigo-600" />
@@ -60,7 +60,7 @@ export default function ForecastTab({ forecastData = [], currentSite }) {
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Surplus Absorption Windows</span>
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
@@ -73,7 +73,7 @@ export default function ForecastTab({ forecastData = [], currentSite }) {
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Shortfall Deficit Windows</span>
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
@@ -88,7 +88,7 @@ export default function ForecastTab({ forecastData = [], currentSite }) {
       </div>
 
       {/* 3. Hourly Forecast Data Table & Inspector */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-sky-100">
           <div>
             <h4 className="font-display font-black text-base text-slate-900">

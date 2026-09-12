@@ -17,7 +17,7 @@ export default function ActionsTab() {
 
       {/* 2. Automated Action Decision Matrix & Protocols */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-bold uppercase mb-2">
             <BatteryCharging className="w-4 h-4 text-emerald-600" />
             <span>Surplus Absorption Protocol</span>
@@ -33,7 +33,7 @@ export default function ActionsTab() {
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center gap-2 text-amber-800 text-xs font-mono font-bold uppercase mb-2">
             <Flame className="w-4 h-4 text-amber-600" />
             <span>Shortfall Deficit Protocol</span>
@@ -49,7 +49,7 @@ export default function ActionsTab() {
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+        <div className="p-5 rounded-3xl surface-card">
           <div className="flex items-center gap-2 text-sky-800 text-xs font-mono font-bold uppercase mb-2">
             <ShieldCheck className="w-4 h-4 text-sky-600" />
             <span>Storm & Cut-Out Safeguard</span>
@@ -67,7 +67,7 @@ export default function ActionsTab() {
       </div>
 
       {/* 3. Real-Time SCADA Command & Event Log */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-100">
           <div className="flex items-center gap-2">
             <Terminal className="w-4 h-4 text-sky-600" />

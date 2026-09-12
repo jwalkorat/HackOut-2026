@@ -30,7 +30,7 @@ export default function FlaggedActionsFeed() {
   };
 
   return (
-    <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] relative">
+    <div className="p-6 rounded-3xl surface-card relative">
       {/* Toast notification banner */}
       {toastMessage && (
         <div className="absolute top-4 right-4 z-30 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 text-white font-bold text-xs font-mono shadow-xl animate-fade-in">
@@ -175,7 +175,7 @@ export default function FlaggedActionsFeed() {
                   ) : (
                     <button
                       onClick={() => handleExecuteAction(item.id, item.actionButton)}
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white font-display font-bold text-xs shadow-glow-sky active:scale-95 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 min-h-11 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-display font-bold text-xs shadow-glow-sky cursor-pointer active:scale-[0.98] transition-colors duration-200 flex items-center gap-1.5"
                     >
                       <span>Simulate Grid Action: {item.actionButton}</span>
                       <ArrowRight className="w-3.5 h-3.5" />

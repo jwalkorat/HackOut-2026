@@ -11,7 +11,8 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
       {/* 1. Top 4 High-Impact Operational KPI Stat Cards in Light Blue Theme */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Daily AI Generation Forecast */}
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] hover:border-sky-400 transition-all group">
+        <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
+          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-sky-500" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Daily AI Generation</span>
             <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse" />
@@ -28,7 +29,8 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
         </div>
 
         {/* Card 2: BESS Battery Storage SOC */}
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] hover:border-amber-400 transition-all group">
+        <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
+          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-amber-400" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>BESS Storage SOC</span>
             <span className="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
@@ -45,7 +47,8 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
         </div>
 
         {/* Card 3: Carbon Offset */}
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] hover:border-emerald-400 transition-all group">
+        <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
+          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-emerald-500" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>CO₂ Avoided Today</span>
             <Leaf className="w-4 h-4 text-emerald-600" />
@@ -59,7 +62,8 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
         </div>
 
         {/* Card 4: Clearing Settlement */}
-        <div className="p-5 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] hover:border-sky-400 transition-all group">
+        <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
+          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-blue-500" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Projected Settlement</span>
             <DollarSign className="w-4 h-4 text-sky-600" />
@@ -74,7 +78,7 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
       </div>
 
       {/* 2. Plant Profile Banner (Clean Full-Width Telemetry Console, No Static Screenshots) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 sm:p-8 rounded-3xl surface-card">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
           <div className="flex flex-wrap items-center gap-2.5">
             <h3 className="font-display font-black text-2xl text-slate-900">

@@ -22,7 +22,7 @@ export default function TelemetryTab({ currentSite }) {
       <GaugesAndRings siteProfile={currentSite} />
 
       {/* 3. High-Frequency Real-Time Substation Sensor Telemetry Feed */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-100">
           <div className="flex items-center gap-2">
             <Radio className="w-4 h-4 text-sky-600 animate-pulse" />

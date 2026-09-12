@@ -33,14 +33,14 @@ export default function DashboardHeader({
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-sky-200/90 shadow-[0_4px_20px_-4px_rgba(2,132,199,0.08)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-sky-200/80 shadow-[0_8px_30px_-12px_rgba(37,99,235,0.18)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           
           {/* Brand & Active System Badge */}
           <div className="flex items-center justify-between lg:justify-start gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-600 via-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-glow-sky">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-sky-500 to-cyan-400 flex items-center justify-center text-white shadow-glow-sky ring-1 ring-white/50">
                 <Zap className="w-5 h-5 fill-current" />
               </div>
               <div>
@@ -75,7 +75,7 @@ export default function DashboardHeader({
               </span>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200 text-slate-900 transition-all font-display text-sm font-bold shadow-sm"
+                className="w-full sm:w-auto min-h-11 flex items-center justify-between gap-3 px-4 py-2 rounded-2xl bg-sky-50/80 hover:bg-sky-100/90 border border-sky-200 text-slate-900 cursor-pointer transition-colors duration-200 font-display text-sm font-bold shadow-sm"
               >
                 <div className="flex items-center gap-2 text-left">
                   {currentSite.energyType === 'solar' ? (
@@ -109,7 +109,7 @@ export default function DashboardHeader({
                       onSelectSite(idx);
                       setDropdownOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all ${
+                    className={`w-full min-h-11 flex items-center gap-3 p-2.5 rounded-xl text-left cursor-pointer transition-colors duration-200 ${
                       selectedSiteIndex === idx
                         ? 'bg-sky-100/80 text-sky-900 font-bold border border-sky-200'
                         : 'text-slate-700 hover:bg-sky-50 hover:text-slate-900'
@@ -150,7 +150,7 @@ export default function DashboardHeader({
             {/* Live Simulator Streaming Toggle */}
             <button
               onClick={onToggleSimulating}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all border ${
+              className={`flex items-center gap-1.5 min-h-10 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold cursor-pointer transition-colors duration-200 border ${
                 isLiveSimulating
                   ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
@@ -163,7 +163,7 @@ export default function DashboardHeader({
             {/* Export CSV Report */}
             <button
               onClick={onExportData}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-sky-50 text-sky-700 font-mono text-xs border border-sky-200 hover:border-sky-300 shadow-sm transition-all"
+              className="flex items-center gap-1.5 min-h-10 px-3 py-1.5 rounded-xl bg-white hover:bg-sky-50 text-sky-700 font-mono text-xs border border-sky-200 hover:border-sky-300 shadow-sm cursor-pointer transition-colors duration-200"
             >
               <Download className="w-3.5 h-3.5 text-sky-600" />
               <span>Export CSV</span>
@@ -172,7 +172,7 @@ export default function DashboardHeader({
             {/* Quick Dispatch All */}
             <button
               onClick={onExecuteAll}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-display font-bold text-xs shadow-glow-sky active:scale-95 transition-all"
+              className="flex items-center gap-1.5 min-h-10 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-display font-bold text-xs shadow-glow-sky cursor-pointer active:scale-[0.98] transition-colors duration-200"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Quick Dispatch All</span>
