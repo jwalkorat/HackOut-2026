@@ -21,14 +21,42 @@ These formulas apply REAL-WORLD equipment-specific adjustments AFTER the model r
   predicted_kw  (actual real-world output estimate)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
+from typing import Optional
 import numpy as np
 
 # ══════════════════════════════════════════════════════════════════
-#  SOLAR PHYSICS CORRECTIONS
+#  SOLAR PHYSICS ESTIMATION & CORRECTIONS
 # ══════════════════════════════════════════════════════════════════
 
 GENERIC_SOLAR_EFFICIENCY_PCT = 20.0   # baseline the model was trained against
 STANDARD_TEST_TEMP_C         = 25.0   # IEC 61215 STC reference temperature
+STANDARD_TEST_IRRADIANCE     = 1000.0 # IEC 61215 STC irradiance (W/m²)
+
+
+def solar_physics_estimate(
+    irradiance: np.ndarray,
+    cloud_cover: Optional[np.ndarray] = None,
+    irradiance_stc: float = STANDARD_TEST_IRRADIANCE,
+) -> np.ndarray:
+    """
+    Physics-based solar capacity factor estimate (0–1 fraction).
+
+    Formula
+    -------
+        pct_physics = clip(irradiance / irradiance_STC, 0.0, 1.0)
+
+    Enforces strict physical constraints:
+        - At STC (1000 W/m²), capacity factor is 1.0 (100%).
+        - When irradiance < 5.0 W/m² (night / astronomical darkness), output is clamped to exactly 0.0.
+    """
+    irr = np.asarray(irradiance, dtype=float)
+    pct = np.clip(irr / irradiance_stc, 0.0, 1.0)
+    if cloud_cover is not None:
+        cc = np.asarray(cloud_cover, dtype=float)
+        pct = pct * (1.0 - 0.7 * (cc / 100.0))
+        pct = np.clip(pct, 0.0, 1.0)
+    pct[irr < 5.0] = 0.0
+    return pct
 
 
 def solar_efficiency_ratio(eq_spec: dict) -> float:
@@ -249,22 +277,26 @@ def apply_wind_corrections(
     # Step 1: hub-height extrapolation
     v_hub  = wind_speed_at_hub(v_10m, h_hub)
 
-    # Step 2: power curve fractions
-    p_generic = turbine_power_curve(v_hub,
-        GENERIC_WIND["cut_in_speed_ms"],
-        GENERIC_WIND["rated_speed_ms"],
-        GENERIC_WIND["cut_out_speed_ms"],
-    )
-    p_turbine = turbine_power_curve(v_hub,
-        float(turbine_spec.get("cut_in_speed_ms",  3.0)),
-        float(turbine_spec.get("rated_speed_ms",   12.0)),
-        float(turbine_spec.get("cut_out_speed_ms", 25.0)),
-    )
+    cut_in  = float(turbine_spec.get("cut_in_speed_ms",  3.0))
+    v_rated = float(turbine_spec.get("rated_speed_ms",   12.0))
+    cut_out = float(turbine_spec.get("cut_out_speed_ms", 25.0))
 
-    # Correction ratio (safe: where generic is ~0 but turbine generates, use turbine directly)
-    correction = np.where(p_generic > 0.02, p_turbine / p_generic, p_turbine)
+    # Step 2: Actual turbine IEC 61400 power curve
+    p_turbine = turbine_power_curve(v_hub, cut_in, v_rated, cut_out)
 
-    corrected  = np.clip(pct_capacity * correction, 0.0, 1.0)
+    # Step 3: Physics-anchored blend:
+    # 85% IEC 61400 physical aerodynamic curve + 15% ML learned nuance.
+    # Enforces that rated wind speed reaches full rated power, eliminating the ML training ceiling.
+    has_model_signal = float(np.max(pct_capacity)) > 1e-4
+    if has_model_signal:
+        blended = np.clip(0.15 * pct_capacity + 0.85 * p_turbine, 0.0, 1.0)
+        corrected = np.maximum(blended, 0.85 * p_turbine)
+    else:
+        corrected = p_turbine
+
+    # Enforce strict physical cut-in and cut-out safety shutdown
+    corrected[v_hub < cut_in] = 0.0
+    corrected[v_hub > cut_out] = 0.0
 
     log = {
         "method": "wind_physics",
@@ -272,8 +304,8 @@ def apply_wind_corrections(
         "shear_alpha": WIND_SHEAR_ALPHA,
         "avg_v_10m_ms": round(float(np.mean(v_10m)), 2),
         "avg_v_hub_ms": round(float(np.mean(v_hub)), 2),
-        "avg_total_correction": round(float(np.mean(correction)), 4),
-        "hours_below_cut_in": int(np.sum(v_hub < turbine_spec.get("cut_in_speed_ms", 3.0))),
-        "hours_above_cut_out": int(np.sum(v_hub > turbine_spec.get("cut_out_speed_ms", 25.0))),
+        "avg_capacity_factor": round(float(np.mean(corrected)), 4),
+        "hours_below_cut_in": int(np.sum(v_hub < cut_in)),
+        "hours_above_cut_out": int(np.sum(v_hub > cut_out)),
     }
     return corrected, log

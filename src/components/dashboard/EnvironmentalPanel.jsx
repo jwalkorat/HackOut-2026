@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, AlertCircle, Wind, Sun, CloudRain, Gauge, Thermometer, Compass, CloudLightning } from 'lucide-react';
 
-export default function EnvironmentalPanel({ forecastData, siteInfo }) {
+export default function EnvironmentalPanel({ siteProfile }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Use the most recent forecast hour that has valid data
-  const latest = forecastData?.find((d) => d.irradiance > 0) || forecastData?.[0] || null;
-
   return (
-    <div className="rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] overflow-hidden transition-all">
+    <div className="rounded-3xl surface-card overflow-hidden transition-colors duration-200">
       {/* Panel Header with Collapsible Toggle */}
       <div
         onClick={() => setIsCollapsed(!isCollapsed)}
@@ -50,7 +47,7 @@ export default function EnvironmentalPanel({ forecastData, siteInfo }) {
               <span>Solar Irradiance</span>
             </div>
             <div className="text-base font-bold font-mono text-slate-900 mt-1">
-              {latest ? `${latest.irradiance.toFixed(0)} W/m²` : '—'}
+              {siteProfile?.irradiance || '920 W/m²'}
             </div>
             <div className="text-[10px] text-amber-700 font-mono mt-0.5">DNI Direct Normal</div>
           </div>
@@ -61,7 +58,7 @@ export default function EnvironmentalPanel({ forecastData, siteInfo }) {
               <span>Wind Speed (100m)</span>
             </div>
             <div className="text-base font-bold font-mono text-slate-900 mt-1">
-              {latest ? `${latest.windSpeed.toFixed(1)} m/s` : '—'}
+              {siteProfile?.windSpeed || '12.4 m/s'}
             </div>
             <div className="text-[10px] text-sky-700 font-mono mt-0.5">Hub-height shear</div>
           </div>
@@ -83,7 +80,7 @@ export default function EnvironmentalPanel({ forecastData, siteInfo }) {
               <span>Ambient Temp</span>
             </div>
             <div className="text-base font-bold font-mono text-slate-900 mt-1">
-              {latest ? `${latest.ambientTemp.toFixed(1)} °C` : '—'}
+              {siteProfile?.ambientTemp || '22°C'}
             </div>
             <div className="text-[10px] text-slate-500 font-mono mt-0.5">Temp coeff: -0.29%/°C</div>
           </div>
@@ -94,7 +91,7 @@ export default function EnvironmentalPanel({ forecastData, siteInfo }) {
               <span>Cloud Cover</span>
             </div>
             <div className="text-base font-bold font-mono text-slate-900 mt-1">
-              {latest ? `${latest.cloudCover.toFixed(0)}%` : '—'}
+              {siteProfile?.cloudCover || '4%'}
             </div>
             <div className="text-[10px] text-blue-700 font-mono mt-0.5">Clear Sky Index: 0.94</div>
           </div>

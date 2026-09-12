@@ -38,7 +38,7 @@ export default function GaugesAndRings({ siteProfile }) {
   ];
 
   return (
-    <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+    <div className="p-6 rounded-3xl surface-card">
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-sky-100">
         <div>
           <h4 className="font-display font-black text-base text-slate-900">

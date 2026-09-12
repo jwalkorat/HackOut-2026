@@ -9,7 +9,7 @@ export default function GenerationChart({ forecastData = [] }) {
   const maxVal = 140; // Max MW scale
 
   return (
-    <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+    <div className="p-6 rounded-3xl surface-card">
       {/* Chart Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
@@ -30,7 +30,7 @@ export default function GenerationChart({ forecastData = [] }) {
             <button
               key={h}
               onClick={() => setHorizon(h)}
-              className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              className={`px-3.5 py-1.5 min-h-10 rounded-xl font-bold cursor-pointer transition-colors duration-200 ${
                 horizon === h
                   ? 'bg-sky-600 text-white shadow-glow-sky'
                   : 'text-slate-600 hover:text-sky-800'

@@ -82,7 +82,7 @@ export default function MLOpsTab() {
   return (
     <div className="space-y-6">
       {/* Simulation Control Bar */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className={`w-3.5 h-3.5 rounded-full ${isSimulating ? 'bg-amber-500 animate-ping' : 'bg-emerald-500'}`} />
@@ -161,7 +161,7 @@ export default function MLOpsTab() {
       </div>
 
       {/* MLflow Model Registry Metrics Table */}
-      <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)]">
+      <div className="p-6 rounded-3xl surface-card">
         <div className="flex items-center justify-between pb-4 mb-4 border-b border-sky-100">
           <div className="flex items-center gap-2">
             <Server className="w-4 h-4 text-sky-600" />

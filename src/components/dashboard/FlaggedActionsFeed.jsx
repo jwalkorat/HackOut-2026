@@ -1,73 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { AlertOctagon, CheckCircle2, Zap, BatteryCharging, ArrowRight, ShieldCheck, Flame, Sparkles, Wind } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertOctagon, CheckCircle2, Zap, BatteryCharging, ArrowRight, ShieldCheck, Flame, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { flaggedWindowsMock } from '../../data/mockForecastData';
 
-/**
- * Generates actionable flag cards from the real API forecast data.
- * Finds contiguous windows of surplus / shortfall / cut-out conditions.
- */
-function generateFlagsFromForecast(forecastData) {
-  if (!forecastData || forecastData.length === 0) return [];
-  const flags = [];
-  let id = 1;
-
-  // Helper: find contiguous windows of a condition
-  const findWindows = (condition, type) => {
-    let start = null;
-    for (let i = 0; i <= forecastData.length; i++) {
-      const d = forecastData[i];
-      if (d && condition(d)) {
-        if (start === null) start = i;
-      } else if (start !== null) {
-        const window = forecastData.slice(start, i);
-        if (window.length >= 2) { // at least 2 hours
-          const delta = window.reduce((s, d) => s + d.netBalance, 0);
-          const startLabel = window[0].timeLabel;
-          const endLabel   = window[window.length - 1].timeLabel;
-          flags.push({ start, window, type, delta, startLabel, endLabel, durationH: window.length });
-        }
-        start = null;
-        id++;
-      }
-    }
-  };
-
-  findWindows((d) => d.flagStatus === 'surplus',   'surplus');
-  findWindows((d) => d.flagStatus === 'shortfall', 'shortfall');
-
-  // Sort by start time and take top 4 most impactful
-  flags.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
-  return flags.slice(0, 4).map((f, idx) => {
-    const isSurplus = f.type === 'surplus';
-    const avgDelta  = (f.delta / f.durationH).toFixed(1);
-    return {
-      id: `FL-${String(idx + 1).padStart(3, '0')}`,
-      type:      f.type,
-      severity:  Math.abs(f.delta) > 50 ? 'critical' : 'medium',
-      title:     isSurplus ? 'Over-Generation Window Detected' : 'Under-Generation / Demand Shortfall',
-      timeframe: `${f.startLabel} → ${f.endLabel}  (${f.durationH} hrs)`,
-      excessCapacity: `${isSurplus ? '+' : ''}${f.delta.toFixed(1)} MWh net`,
-      rootCause: isSurplus
-        ? `High renewable generation (avg +${avgDelta} MW surplus) over ${f.durationH}h window. Risk of grid over-frequency if not curtailed or stored.`
-        : `Demand exceeds generation by avg ${Math.abs(avgDelta)} MW over ${f.durationH}h window. Backup or storage discharge required.`,
-      recommendation: isSurplus
-        ? 'Charge BESS with surplus energy. If battery full, apply dynamic curtailment and submit curtailment bid to grid operator.'
-        : 'Discharge BESS to cover shortfall. If SOC insufficient, activate backup peaker and request emergency grid import.',
-      actionType: isSurplus ? 'storage_charge' : 'storage_discharge',
-      actionButton: isSurplus ? 'Dispatch BESS Charging' : 'Discharge BESS & Pre-warm Peaker',
-      co2Saved: isSurplus ? `${(Math.abs(f.delta) * 0.82).toFixed(0)} Tons Avoided` : 'Grid Stability Preserved',
-      status: 'Action Required',
-      resolved: false,
-    };
-  });
-}
-
-export default function FlaggedActionsFeed({ forecastData }) {
-  const generatedFlags = useMemo(() => generateFlagsFromForecast(forecastData), [forecastData]);
-  const [flags, setFlags] = useState(null); // null = not yet overridden
+export default function FlaggedActionsFeed() {
+  const [flags, setFlags] = useState(flaggedWindowsMock);
   const [toastMessage, setToastMessage] = useState(null);
-  // Use override if user has acted, otherwise use live generated flags
-  const displayFlags = flags || generatedFlags;
 
   const handleExecuteAction = (flagId, actionName) => {
     confetti({
@@ -78,7 +16,7 @@ export default function FlaggedActionsFeed({ forecastData }) {
     });
 
     setFlags((prev) =>
-      (prev || generatedFlags).map((f) =>
+      prev.map((f) =>
         f.id === flagId
           ? { ...f, resolved: true, status: 'Dispatched to Balancing Bus' }
           : f
@@ -92,7 +30,7 @@ export default function FlaggedActionsFeed({ forecastData }) {
   };
 
   return (
-    <div className="p-6 rounded-3xl bg-white/95 border border-sky-200/90 shadow-[0_4px_25px_-5px_rgba(2,132,199,0.08)] relative">
+    <div className="p-6 rounded-3xl surface-card relative">
       {/* Toast notification banner */}
       {toastMessage && (
         <div className="absolute top-4 right-4 z-30 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 text-white font-bold text-xs font-mono shadow-xl animate-fade-in">
@@ -125,11 +63,7 @@ export default function FlaggedActionsFeed({ forecastData }) {
 
       {/* Flagged Item Cards */}
       <div className="space-y-4">
-        {displayFlags.length === 0 ? (
-          <div className="text-center py-10 text-slate-400 font-mono text-sm">
-            ✓ No flagged anomaly windows in the current 72h forecast.
-          </div>
-        ) : displayFlags.map((item) => {
+        {flags.map((item) => {
           const isSurplus = item.type === 'surplus';
           const isShortfall = item.type === 'shortfall';
 
@@ -241,7 +175,7 @@ export default function FlaggedActionsFeed({ forecastData }) {
                   ) : (
                     <button
                       onClick={() => handleExecuteAction(item.id, item.actionButton)}
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white font-display font-bold text-xs shadow-glow-sky active:scale-95 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 min-h-11 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-display font-bold text-xs shadow-glow-sky cursor-pointer active:scale-[0.98] transition-colors duration-200 flex items-center gap-1.5"
                     >
                       <span>Simulate Grid Action: {item.actionButton}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
