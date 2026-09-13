@@ -49,9 +49,6 @@ export default function Navbar({ onOpenJudgePitch }) {
             <a href="#equipment" className="px-3.5 py-2 rounded-lg text-sm text-slate-300 hover:text-cyan-400 hover:bg-slate-850/60 transition-colors">
               Equipment Lookup
             </a>
-            <a href="#mlops" className="px-3.5 py-2 rounded-lg text-sm text-slate-300 hover:text-cyan-400 hover:bg-slate-850/60 transition-colors">
-              MLOps Loop
-            </a>
             <a href="#tech-stack" className="px-3.5 py-2 rounded-lg text-sm text-slate-300 hover:text-cyan-400 hover:bg-slate-850/60 transition-colors">
               Tech Stack
             </a>
@@ -127,13 +124,6 @@ export default function Navbar({ onOpenJudgePitch }) {
             className="block px-3 py-2 rounded-lg text-base text-slate-200 hover:bg-slate-900"
           >
             Equipment Lookup & Defaults
-          </a>
-          <a
-            href="#mlops"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-base text-slate-200 hover:bg-slate-900"
-          >
-            MLOps Self-Healing Loop
           </a>
           <a
             href="#tech-stack"

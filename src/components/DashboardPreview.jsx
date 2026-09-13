@@ -6,7 +6,7 @@ import WindWaveformChart from './dashboard/WindWaveformChart';
 import GaugesAndRings from './dashboard/GaugesAndRings';
 import EnvironmentalPanel from './dashboard/EnvironmentalPanel';
 import FlaggedActionsFeed from './dashboard/FlaggedActionsFeed';
-import { MapPin, Sun, Wind, Zap, Layers, DollarSign, Leaf, Activity, ArrowUpRight, CheckCircle2, ChevronRight } from 'lucide-react';
+import { MapPin, Sun, Wind, Zap, Layers, IndianRupee, Leaf, Activity, ArrowUpRight, CheckCircle2, ChevronRight } from 'lucide-react';
 
 export default function DashboardPreview() {
   const [selectedSiteIndex, setSelectedSiteIndex] = useState(2); // Default to Altair Hybrid
@@ -112,7 +112,7 @@ export default function DashboardPreview() {
           <div className="p-5 rounded-2xl bg-dark-900/80 border border-slate-800/90 backdrop-blur-xl hover:border-cyan-500/40 transition-all group">
             <div className="flex items-center justify-between text-xs font-mono text-slate-400">
               <span>Projected Settlement</span>
-              <DollarSign className="w-3.5 h-3.5 text-cyan-400" />
+              <IndianRupee className="w-3.5 h-3.5 text-cyan-400" />
             </div>
             <div className="text-2xl sm:text-3xl font-black font-display text-white mt-2">
               {currentSite.revenueProjected}

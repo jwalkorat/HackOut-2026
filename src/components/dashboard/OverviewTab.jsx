@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Wind, Zap, Leaf, DollarSign, Activity, MapPin, ArrowUpRight, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Sun, Wind, Zap, Leaf, IndianRupee, Activity, MapPin, ArrowUpRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 import Hero3DScene from '../Hero3DScene';
 import GenerationChart from './GenerationChart';
 import EnvironmentalPanel from './EnvironmentalPanel';
@@ -8,41 +8,42 @@ import FlaggedActionsFeed from './FlaggedActionsFeed';
 export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) {
   return (
     <div className="space-y-6">
-      {/* 1. Top 4 High-Impact Operational KPI Stat Cards in Light Blue Theme */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Daily AI Generation Forecast */}
+      {/* 1. Real-time Generation Telemetry Ribbon (Screenshot 3 Inspiration: Top KPI Strip) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Card 1: Actual / Forecast Generation */}
         <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
-          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-sky-500" />
+          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-cyan-500" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
-            <span>Daily AI Generation</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse" />
+            <span>24h Forecast Delivery</span>
+            <Zap className="w-4 h-4 text-cyan-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-black font-display text-slate-900 mt-2">
             {currentSite.dailyForecastGen}
           </div>
-          <div className="mt-1 flex items-center justify-between text-[11px] font-mono">
-            <span className="text-slate-500">Demand: {currentSite.dailyDemand}</span>
-            <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-              {currentSite.expectedSurplus}
-            </span>
+          <div className="mt-1 text-[11px] font-mono text-slate-500">
+            Demand Baseline: {currentSite.dailyDemand}
           </div>
         </div>
 
-        {/* Card 2: BESS Battery Storage SOC */}
+        {/* Card 2: Expected Imbalance / Balancing Action */}
         <div className="p-5 rounded-3xl surface-card glass-card-hover relative overflow-hidden">
-          <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-amber-400" />
+          <span className={`absolute left-0 top-4 bottom-4 w-1 rounded-full ${
+            currentSite.expectedSurplus.startsWith('+') ? 'bg-emerald-500' : 'bg-amber-500'
+          }`} />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
-            <span>BESS Storage SOC</span>
-            <span className="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-              {currentSite.storageSOC}%
-            </span>
+            <span>Projected Imbalance</span>
+            <Activity className={`w-4 h-4 ${
+              currentSite.expectedSurplus.startsWith('+') ? 'text-emerald-600' : 'text-amber-600'
+            }`} />
           </div>
-          <div className="text-2xl sm:text-3xl font-black font-display text-slate-900 mt-2">
-            {currentSite.storageCapacity.split(' ')[0]} {currentSite.storageCapacity.split(' ')[1]}
+          <div className={`text-2xl sm:text-3xl font-black font-display mt-2 ${
+            currentSite.expectedSurplus.startsWith('+') ? 'text-emerald-800' : 'text-amber-800'
+          }`}>
+            {currentSite.expectedSurplus}
           </div>
-          <div className="mt-1 flex items-center justify-between text-[11px] font-mono">
-            <span className="text-slate-500">Chemistry: LFP Buffer</span>
-            <span className="text-amber-700 font-semibold">Ready to Dispatch</span>
+          <div className="mt-1 text-[11px] font-mono text-slate-500 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            BESS Absorption Protocol Ready
           </div>
         </div>
 
@@ -53,7 +54,7 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
             <span>CO₂ Avoided Today</span>
             <Leaf className="w-4 h-4 text-emerald-600" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black font-display text-emerald-700 mt-2">
+          <div className="text-2xl sm:text-3xl font-black font-display text-slate-900 mt-2">
             {currentSite.carbonOffsetToday}
           </div>
           <div className="mt-1 text-[11px] font-mono text-slate-500">
@@ -66,7 +67,7 @@ export default function OverviewTab({ currentSite, forecastData, onSwitchTab }) 
           <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-blue-500" />
           <div className="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Projected Settlement</span>
-            <DollarSign className="w-4 h-4 text-sky-600" />
+            <IndianRupee className="w-4 h-4 text-sky-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-black font-display text-slate-900 mt-2">
             {currentSite.revenueProjected}

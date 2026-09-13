@@ -75,7 +75,7 @@ export default function ProblemSection() {
               When wind velocity collapses or a storm front darkens solar panels during the evening peak, the grid faces immediate blackout risk. Operators must start fast-firing fossil combustion turbines, causing emission spikes and massive balancing fees.
             </p>
             <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 font-mono text-xs text-red-400">
-              <span className="font-bold">Grid Penalty:</span> High spot emissions + up to $5,000/MWh peak scarcity pricing.
+              <span className="font-bold">Grid Penalty:</span> High spot emissions + up to ₹12,000/MWh peak scarcity pricing.
             </div>
           </div>
         </div>

@@ -7,14 +7,14 @@ import ActionsView from './views/ActionsView';
 import TelemetryView from './views/TelemetryView';
 import ConfigView from './views/ConfigView';
 import EquipmentView from './views/EquipmentView';
-import MLOpsView from './views/MLOpsView';
 import { siteProfiles } from './data/siteProfiles';
 import { generate72HourData, flaggedActionWindows } from './data/mockForecastData';
 import { postForecast } from './utils/apiClient';
+import CapsuleNavBar from './components/navigation/CapsuleNavBar';
 import confetti from 'canvas-confetti';
 import {
   Zap, Sun, Wind, Download, Sparkles, Radio,
-  LayoutDashboard, TrendingUp, AlertTriangle, Activity, Sliders, Database, GitBranch, ChevronDown, CheckCircle2
+  LayoutDashboard, TrendingUp, AlertTriangle, Activity, Sliders, Database, ChevronDown, CheckCircle2
 } from 'lucide-react';
 
 class SceneGuard extends Component {
@@ -40,7 +40,6 @@ const TABS = [
   { id: 'diagnostics', label: 'Waves', icon: Activity },
   { id: 'config', label: 'Setup', icon: Sliders },
   { id: 'equipment', label: 'Fleet', icon: Database },
-  { id: 'mlops', label: 'MLOps', icon: GitBranch },
 ];
 
 export default function App() {
@@ -243,39 +242,15 @@ export default function App() {
               </div>
             </div>
 
-            {/* Navigation tabs */}
-            <nav className="overflow-x-auto no-scrollbar rounded-2xl bg-white/45 border border-white/10 p-1">
-              <div className="topbar-nav flex items-center min-w-max">
-                {TABS.map((tab) => {
-                  const Icon = tab.icon;
-                  const on = activeTab === tab.id;
-                  const badge = tab.id === 'actions' && flagCount > 0 ? String(flagCount) : null;
-                  return (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      title={tab.label}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`relative flex items-center justify-center min-h-10 px-3.5 rounded-xl text-xs font-bold gap-1.5 transition-all ${
-                        on
-                          ? 'bg-sky-500 text-white shadow-[0_0_24px_rgba(14,165,233,0.26)]'
-                          : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'
-                      }`}
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                      <span className="hidden sm:inline font-mono">{tab.label}</span>
-                      {badge && (
-                        <span className={`min-w-4 h-4 px-1 flex items-center justify-center text-[9px] rounded-full border border-white/70 ${
-                          on ? 'bg-white/25 text-white' : 'bg-sky-100 text-sky-800 font-bold'
-                        }`}>
-                          {badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </nav>
+            {/* Navigation tabs: Modern Squircle Blue Navigation Bar */}
+            <div className="flex justify-center items-center flex-1 w-full px-2 min-w-0">
+              <CapsuleNavBar
+                tabs={TABS}
+                activeTab={activeTab}
+                onSelectTab={setActiveTab}
+                flagCount={flagCount}
+              />
+            </div>
 
             {/* Actions & Site selector */}
             <div className="flex flex-wrap sm:flex-nowrap items-center justify-end gap-2 min-w-0">
@@ -453,10 +428,6 @@ export default function App() {
 
           {activeTab === 'equipment' && (
             <EquipmentView />
-          )}
-
-          {activeTab === 'mlops' && (
-            <MLOpsView />
           )}
         </div>
       </main>

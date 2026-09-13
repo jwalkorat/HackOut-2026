@@ -81,7 +81,6 @@ export default function Footer({ onOpenJudgePitch }) {
               <li><a href="#dashboard" className="hover:text-cyan-400 transition-colors">Operator Dashboard</a></li>
               <li><a href="#progressive-input" className="hover:text-cyan-400 transition-colors">Progressive Input</a></li>
               <li><a href="#equipment" className="hover:text-cyan-400 transition-colors">Equipment Lookup</a></li>
-              <li><a href="#mlops" className="hover:text-cyan-400 transition-colors">MLOps Retraining</a></li>
             </ul>
           </div>
 

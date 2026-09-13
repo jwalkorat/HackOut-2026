@@ -2,7 +2,7 @@ import React from 'react';
 import { Glass } from '../components/ui/Glass';
 import OrbCanvas from '../components/world/OrbCanvas';
 import {
-  Sun, Wind, Zap, MapPin, DollarSign, Leaf, ArrowRight,
+  Sun, Wind, Zap, MapPin, IndianRupee, Leaf, ArrowRight,
   ZoomIn, ZoomOut, RotateCcw, Move
 } from 'lucide-react';
 
@@ -42,7 +42,8 @@ export default function OverviewView({ currentSite, forecastData = [], forecastM
       : solarMwh + windMwh;
 
   const co2Avoided = activeMwh * 0.49; // ~0.49 tCO2/MWh for clean generation
-  const revenue = activeMwh * 126; // $126/MWh avg settlement
+  const tariffInrPerMwh = 4250; // ₹4,250/MWh avg Indian green tariff (IEX/CERC baseline)
+  const revenue = activeMwh * tariffInrPerMwh;
 
   const sourceTitle = energyMode === 'solar'
     ? `${currentSite.name} · Solar Array`
@@ -69,7 +70,7 @@ export default function OverviewView({ currentSite, forecastData = [], forecastM
         ? { label: 'Fleet Output', value: formatEnergy(windMwh), hint: currentSite.metrics?.activeTurbines || 'Turbines online', extra: 'Peak wind window', kind: 'turbine', accent: 0x38bdf8 }
         : { label: 'Solar Conditions', value: currentSite.irradiance || '920 W/m²', hint: `${currentSite.cloudCover || '4%'} cloud cover`, extra: 'PV Array active', kind: 'sun', accent: 0xfacc15 },
     { label: 'CO₂ Avoided Today', value: `${co2Avoided.toFixed(1)} Tons`, hint: 'Clean generation offset', extra: currentSite.weatherCondition || 'Optimal', kind: 'sun', accent: 0x4ade80 },
-    { label: 'Projected Settlement', value: `$${Math.round(revenue).toLocaleString()}`, hint: '$126/MWh avg rate', extra: formatSignedEnergy(activeMwh - demandMwh) + ' net', kind: energyMode === 'solar' ? 'sun' : 'turbine', accent: 0x65a30d },
+    { label: 'Projected Settlement', value: `₹${Math.round(revenue).toLocaleString('en-IN')}`, hint: '₹4,250/MWh avg tariff', extra: formatSignedEnergy(activeMwh - demandMwh) + ' net', kind: energyMode === 'solar' ? 'sun' : 'turbine', accent: 0x65a30d },
   ];
 
   const detailRows = energyMode === 'hybrid'
@@ -77,7 +78,7 @@ export default function OverviewView({ currentSite, forecastData = [], forecastM
       { label: 'Solar today', value: formatEnergy(solarMwh), Icon: Sun, tone: 'text-lime-700' },
       { label: 'Wind today', value: formatEnergy(windMwh), Icon: Wind, tone: 'text-emerald-600' },
       { label: 'Total stored', value: formatEnergy(storedMwh), Icon: Zap, tone: 'text-emerald-500' },
-      { label: 'Net balance', value: formatSignedEnergy(activeMwh - demandMwh), Icon: DollarSign, tone: 'text-amber-600' },
+      { label: 'Net balance', value: formatSignedEnergy(activeMwh - demandMwh), Icon: IndianRupee, tone: 'text-amber-600' },
       { label: 'Irradiance', value: currentSite.irradiance || '920 W/m²', Icon: Sun, tone: 'text-amber-500' },
       { label: 'Wind 100m', value: currentSite.windSpeed || '8.6 m/s', Icon: Wind, tone: 'text-emerald-600' },
     ]
@@ -87,7 +88,7 @@ export default function OverviewView({ currentSite, forecastData = [], forecastM
         { label: 'Wind 100m', value: currentSite.windSpeed || '12.4 m/s', Icon: Wind, tone: 'text-emerald-600' },
         { label: 'Fleet', value: currentSite.metrics?.activeTurbines || 'Wind fleet active', Icon: Zap, tone: 'text-lime-700' },
         { label: 'Runtime', value: currentSite.metrics?.operationalHours || '24.0 hrs', Icon: Leaf, tone: 'text-emerald-500' },
-        { label: 'Stored buffer', value: formatEnergy(storedMwh), Icon: DollarSign, tone: 'text-amber-600' },
+        { label: 'Stored buffer', value: formatEnergy(storedMwh), Icon: IndianRupee, tone: 'text-amber-600' },
         { label: 'Coordinates', value: currentSite.coordinates || `${currentSite.latitude}, ${currentSite.longitude}`, Icon: MapPin, tone: 'text-rose-500' },
       ]
       : [
@@ -95,7 +96,7 @@ export default function OverviewView({ currentSite, forecastData = [], forecastM
         { label: 'Irradiance', value: currentSite.irradiance || '920 W/m²', Icon: Sun, tone: 'text-amber-500' },
         { label: 'Cloud cover', value: currentSite.cloudCover || '4%', Icon: Zap, tone: 'text-lime-700' },
         { label: 'Array', value: currentSite.metrics?.activePanels || 'PV array active', Icon: Leaf, tone: 'text-emerald-500' },
-        { label: 'Stored buffer', value: formatEnergy(storedMwh), Icon: DollarSign, tone: 'text-amber-600' },
+        { label: 'Stored buffer', value: formatEnergy(storedMwh), Icon: IndianRupee, tone: 'text-amber-600' },
         { label: 'Coordinates', value: currentSite.coordinates || `${currentSite.latitude}, ${currentSite.longitude}`, Icon: MapPin, tone: 'text-rose-500' },
       ];
 

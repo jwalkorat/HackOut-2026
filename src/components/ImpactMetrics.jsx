@@ -1,5 +1,5 @@
 import React from 'react';
-import { Leaf, ShieldCheck, DollarSign, Users, ArrowUpRight, CheckCircle2, TrendingUp, Sparkles } from 'lucide-react';
+import { Leaf, ShieldCheck, IndianRupee, Users, ArrowUpRight, CheckCircle2, TrendingUp, Sparkles } from 'lucide-react';
 
 export default function ImpactMetrics() {
   const impacts = [
@@ -25,10 +25,10 @@ export default function ImpactMetrics() {
       metric: '+18.5%',
       label: 'Producer Revenue Realized',
       title: 'Maximizes Trader & Plant Producer ROI',
-      desc: 'Enables strategic day-ahead bidding into wholesale electricity markets (CAISO/ERCOT/PJM) instead of taking penalty pricing on volatile deviations.',
-      subtext: 'Averts zero-dollar negative price curtailment dump',
+      desc: 'Enables strategic day-ahead bidding into wholesale electricity markets (IEX/PXIL/HP-DAM) instead of taking penalty pricing on volatile deviations.',
+      subtext: 'Averts zero-rupee negative price curtailment dump',
       color: 'amber',
-      icon: DollarSign,
+      icon: IndianRupee,
     },
     {
       metric: '10s',
