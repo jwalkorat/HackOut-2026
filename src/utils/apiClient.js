@@ -3,7 +3,7 @@
 // All data on the dashboard ultimately flows through here.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
 
 // ── Geocode a free-text location name → { latitude, longitude, display } ─────
 // Calls Open-Meteo geocoding API directly — no backend needed for this step.

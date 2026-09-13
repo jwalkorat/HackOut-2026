@@ -20,7 +20,8 @@ from app.services.recommend import flag_generation_status, recommend_grid_action
 from app.services.physics import apply_solar_corrections, apply_wind_corrections, solar_physics_estimate
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODELS_DIR = os.path.join(PROJECT_ROOT, "models")
+LOCAL_MODELS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
+MODELS_DIR = LOCAL_MODELS if os.path.exists(LOCAL_MODELS) else os.path.join(PROJECT_ROOT, "models")
 
 app = FastAPI(
     title="HackOut'26 - AI Renewable Generation Forecasting API",
